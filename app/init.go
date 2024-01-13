@@ -16,6 +16,7 @@ import (
 	goyesqlx "github.com/knadh/goyesql/v2/sqlx"
 	"github.com/knadh/stuffbin"
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	flag "github.com/spf13/pflag"
 )
 
@@ -154,6 +155,7 @@ func initHTTPServer(app *App) *echo.Echo {
 	var srv = echo.New()
 	srv.HideBanner = true
 
+	srv.Use(middleware.Logger())
 	srv.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
 			c.Set("app", app)

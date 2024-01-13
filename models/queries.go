@@ -3,5 +3,6 @@ package models
 import "github.com/jmoiron/sqlx"
 
 type Queries struct {
-	GetWeights *sqlx.Stmt `query:"get-workouts"`
+	GetExercises    *sqlx.Stmt `query:"get-exercises"`
+	GetExerciseById *sqlx.Stmt `query:"get-exercise-by-id"`
 }
