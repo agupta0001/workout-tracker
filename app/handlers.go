@@ -26,6 +26,9 @@ func initHTTPHandlers(e *echo.Echo, app *App) {
 	}
 
 	e.GET("/api/health", handleHealthCheck)
+
+	e.GET("/api/exercises", handleGetExercises)
+	e.GET("/api/workouts", handleGetWorkouts)
 }
 
 func handleHealthCheck(c echo.Context) error {

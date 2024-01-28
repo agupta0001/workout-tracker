@@ -163,6 +163,11 @@ func initHTTPServer(app *App) *echo.Echo {
 		}
 	})
 
+	// Initilize static file server.
+	fSrv := app.fs.FileServer()
+
+	srv.GET("/public/static/*", echo.WrapHandler(fSrv))
+
 	initHTTPHandlers(srv, app)
 
 	go func() {

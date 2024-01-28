@@ -34,6 +34,9 @@ type Exercise struct {
 	Tags pq.StringArray `db:"tags" json:"tags"`
 }
 
+// Exercises represents a slice of Exercise.
+type Exercises []Exercise
+
 type Workout struct {
 	Base
 
@@ -43,3 +46,6 @@ type Workout struct {
 	SetNo      int `db:"set_no" json:"set_no"`
 	Reps       int `db:"reps" json:"reps"`
 }
+
+// Workouts represents a slice of Workout.
+type Workouts []Workout
