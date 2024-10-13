@@ -10,9 +10,9 @@ import (
 func handleGetWorkouts(c echo.Context) error {
 	var app = c.Get("app").(*App)
 
-	out := models.Exercise{}
+	var out models.Workouts
 
-	err := app.queries.GetExerciseById.Select(&out, 1)
+	err := app.queries.GetWorkouts.Select(&out)
 	if err != nil {
 		return err
 	}

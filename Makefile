@@ -7,7 +7,7 @@ BIN := workout-tracker
 .PHONY: build
 build: $(BIN)
 
-# Build the backend to ./listmonk.
+# Build the backend to ./workout-tracker.
 $(BIN): $(shell find . -type f -name "*.go")
 	CGO_ENABLED=0 go build -o ${BIN} -ldflags="-s -w -X 'main.buildString=${BUILDSTR}' -X 'main.versionString=${VERSION}'" app/*.go
 
