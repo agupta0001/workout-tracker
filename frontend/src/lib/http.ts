@@ -41,12 +41,12 @@ class Http {
     );
   }
 
-  async get(
+  async get<T>(
     url: string,
     queryParams: { params?: object } = {},
     useFirebaseToken: boolean = false,
     options: { signal?: AbortSignal } = {}
-  ): Promise<object> {
+  ): Promise<T> {
     const tokenHeader = await this.getTokenHeader(useFirebaseToken);
     try {
       const response = await this.axios.get(url, {
@@ -56,17 +56,17 @@ class Http {
         },
         ...options,
       });
-      return response.data;
+      return response.data as T;
     } catch (error: unknown) {
       this.#handleError(error);
     }
   }
 
-  async post(
+  async post<T>(
     url: string,
     data: object = {},
     useFirebaseToken: boolean = false
-  ): Promise<object> {
+  ): Promise<T> {
     const tokenHeader = await this.getTokenHeader(useFirebaseToken);
     try {
       return await this.axios.post(
@@ -85,11 +85,11 @@ class Http {
     }
   }
 
-  async put(
+  async put<T>(
     url: string,
     data: object = {},
     useFirebaseToken: boolean = false
-  ): Promise<object> {
+  ): Promise<T> {
     const tokenHeader = await this.getTokenHeader(useFirebaseToken);
     try {
       return await this.axios.put(
@@ -108,11 +108,11 @@ class Http {
     }
   }
 
-  async patch(
+  async patch<T>(
     url: string,
     data: object = {},
     useFirebaseToken: boolean = false
-  ): Promise<object> {
+  ): Promise<T> {
     const tokenHeader = await this.getTokenHeader(useFirebaseToken);
     try {
       return await this.axios.patch(
@@ -131,11 +131,11 @@ class Http {
     }
   }
 
-  async delete(
+  async delete<T>(
     url: string,
     data?: object,
     useFirebaseToken: boolean = false
-  ): Promise<object> {
+  ): Promise<T> {
     const tokenHeader = await this.getTokenHeader(useFirebaseToken);
     try {
       return await this.axios.delete(url, {
