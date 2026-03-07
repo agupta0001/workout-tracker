@@ -50,7 +50,7 @@ func install(db *sqlx.DB, fs stuffbin.FileSystem) {
 	fmt.Println("")
 
 	fmt.Println("** first time installation **")
-	fmt.Printf("** IMPORTANT: This will wipe existing listmonk tables and types in the DB '%s' **",
+	fmt.Printf("** IMPORTANT: This will wipe existing workout-tracker tables and types in the DB '%s' **",
 		os.Getenv("DB_NAME"))
 
 	fmt.Println("")
