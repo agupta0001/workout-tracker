@@ -9,6 +9,8 @@ import {
   signInWithPopup,
   type User as FirebaseUser,
 } from "firebase/auth";
+import http from "../lib/http";
+import type { LoginResponse } from "../types/auth";
 
 const formatAuthState = (user: FirebaseUser): IAuth => ({
   uid: user.uid,
@@ -44,10 +46,15 @@ function useFirebaseAuth() {
       try {
         formatedAuth.token = await authState.getIdToken();
 
-        // TODO: Fetch current user data from backend and set it to state
+        const loginResponse = await http.post<LoginResponse>(
+          "/login",
+          undefined,
+          true
+        );
 
+        localStorage.setItem("jwtToken", loginResponse.token);
         setAuth(formatedAuth);
-        setCurrentUser((prevUser) => prevUser);
+        setCurrentUser((prevUser) => ({ ...prevUser, ...loginResponse.user }));
       } catch (error: unknown) {
         console.error(
           "Error fetching ID token:",
@@ -60,7 +67,7 @@ function useFirebaseAuth() {
     []
   );
 
-  useCallback(() => {
+  useEffect(() => {
     setLoading(true);
     const unsubscribe = onAuthStateChanged(firebaseAuth, handleAuthChange);
     return () => unsubscribe();
@@ -70,7 +77,7 @@ function useFirebaseAuth() {
     await firebaseSignOut(firebaseAuth);
   }, []);
 
-  const signInWithGoogle = useCallback(async () => {
+  const signInWithGoogle = async () => {
     setLoading(true);
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ access_type: "offline" });
@@ -83,7 +90,7 @@ function useFirebaseAuth() {
       console.error("Error during Google sign-in:", error);
       setLoading(false);
     }
-  }, []);
+  };
 
   return {
     auth,
