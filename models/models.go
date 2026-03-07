@@ -14,11 +14,10 @@ type Base struct {
 type User struct {
 	Base
 
-	UUID   string      `db:"uuid" json:"uuid"`
-	Email  string      `db:"email" json:"email"`
-	Name   string      `db:"name" json:"name"`
-	Avatar null.String `db:"avatar" json:"photo_url"`
-	Token  null.String `db:"token" json:"token"`
+	UID    string `db:"uid" json:"uid"`
+	Email  string `db:"email" json:"email"`
+	Name   string `db:"name" json:"name"`
+	Avatar string `db:"avatar" json:"photo_url"`
 }
 
 type Weight struct {
