@@ -1,7 +1,11 @@
 package main
 
 import (
+	"context"
 	"fmt"
+
+	firebase "firebase.google.com/go/v4"
+
 	"log"
 	"os"
 	"path"
@@ -13,10 +17,13 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	"github.com/knadh/goyesql/v2"
+	"google.golang.org/api/option"
+
 	goyesqlx "github.com/knadh/goyesql/v2/sqlx"
 	"github.com/knadh/stuffbin"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+
 	flag "github.com/spf13/pflag"
 )
 
@@ -152,9 +159,10 @@ func prepareQueries(qMap goyesql.Queries, db *sqlx.DB) *models.Queries {
 }
 
 func initHTTPServer(app *App) *echo.Echo {
-	var srv = echo.New()
+	srv := echo.New()
 	srv.HideBanner = true
 
+	srv.Use(middleware.CORS())
 	srv.Use(middleware.Logger())
 	srv.Use(func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
@@ -181,6 +189,16 @@ func initHTTPServer(app *App) *echo.Echo {
 	}()
 
 	return srv
+}
+
+func initFB() *firebase.App {
+	opt := option.WithCredentialsFile(os.Getenv("FB_CRED_PATH"))
+	app, err := firebase.NewApp(context.Background(), nil, opt)
+	if err != nil {
+		log.Fatalf("error initializing app: %v", err)
+	}
+
+	return app
 }
 
 func awaitReload(sigChan chan os.Signal, closerWait chan bool, closer func()) chan bool {

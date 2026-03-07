@@ -10,6 +10,7 @@ import (
 
 	"workout-tracker/models"
 
+	firebase "firebase.google.com/go/v4"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/knadh/stuffbin"
@@ -20,6 +21,7 @@ type App struct {
 	db      *sqlx.DB
 	queries *models.Queries
 	fs      stuffbin.FileSystem
+	fbAuth  *firebase.App
 
 	chReload chan os.Signal
 }
@@ -29,6 +31,7 @@ var (
 	queries *models.Queries
 	fs      stuffbin.FileSystem
 	vp      *viper.Viper = viper.New()
+	fbAuth  *firebase.App
 
 	appDir string = "."
 )
@@ -44,6 +47,7 @@ func init() {
 
 	db = initDB()
 	fs = initFS(appDir)
+	fbAuth = initFB()
 
 	if vp.GetBool("install") {
 		install(db, fs)
@@ -66,6 +70,7 @@ func main() {
 		db:      db,
 		queries: queries,
 		fs:      fs,
+		fbAuth:  fbAuth,
 	}
 
 	srv := initHTTPServer(app)
