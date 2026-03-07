@@ -122,9 +122,9 @@ func handleLogin(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, okResp{Data: map[string]interface{}{
-		"token":          signedToken,
-		"user":           out,
-		"tokenExpiresIn": tokenExpiresIn,
+		"token":            signedToken,
+		"user":             out,
+		"token_expires_in": tokenExpiresIn,
 	}})
 
 }
